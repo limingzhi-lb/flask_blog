@@ -1,0 +1,2 @@
+你好， {{ username }}邮箱修改，请点击右边链接
+{{ url_for('user.email_activate', token=token, _external=True) }}完成修改

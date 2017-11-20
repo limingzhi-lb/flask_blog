@@ -1,0 +1,3 @@
+<p>你好， {{ username }}</p>
+<p>邮箱激活，请点击右边链接
+    <a href="{{ url_for('user.email_activate', token=token, _external=True) }}">完成修改</a></p>

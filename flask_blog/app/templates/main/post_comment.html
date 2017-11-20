@@ -1,0 +1,60 @@
+{% extends 'common/base.html' %}
+{% from 'common/macro.html' import pagination_show %}
+
+{% block title %}评论{% endblock %}
+
+{% block page_content %}
+        <div class="media">
+  <div class="media-left">
+    <a href="#">
+      <img style="width: 64px; height: 64px" class="media-object" src="{{ url_for('static', filename='upload/'+post.user.icon) }}" alt="icon">
+    </a>
+  </div>
+  <div class="media-body">
+      <h4 class="media-heading"><a href="{{ url_for('main.post_list', name=post.user.username) }}">{{ post.user.username }}</a></h4>
+    {{ post.content }}
+  </div>
+</div>
+<hr/>
+{{ wtf.quick_form(form) }}
+<br/>
+{#    评论#}
+    {% for c in comment_list %}
+        <hr />
+{#        评论#}
+    <div class="media">
+  <div class="media-left">
+    <a href="#">
+      <img style="width: 64px; height: 64px" class="media-object" src="{{ url_for('static', filename='upload/'+c.user.icon) }}" alt="icon">
+    </a>
+  </div>
+  <div class="media-body">
+      <div style="float: right">{{ moment(c.timestamp).fromNow() }}</div>
+      <h4 class="media-heading"><a href="{{ url_for('main.post_list', name=c.user.username) }}">{{ c.user.username }}</a></h4>
+{#    {{ c.content }}#}
+      <a href="{{ url_for('main.comment', comment_id=c.id, comment_content=c.content, response=c.id) }}">{{ c.content }}</a>
+  </div>
+</div>
+
+{#        回复评论#}
+    {% for r in response_dict[c.id] %}
+            <div style="margin-left: 65px" class="media">
+  <div class="media-left">
+    <a href="#">
+      <img style="width: 64px; height: 64px" class="media-object" src="{{ url_for('static', filename='upload/'+r.user.icon) }}" alt="icon">
+    </a>
+  </div>
+  <div class="media-body">
+      <div style="float: right">{{ moment(r.timestamp).fromNow() }}</div>
+      <h4 class="media-heading"><a href="{{ url_for('main.post_list', name=r.user.username) }}">{{ r.user.username }}</a></h4>
+    {{ r.content }}
+{#      <a href="{{ url_for('main.comment', comment_id=c.id, comment_content=c.content, response=c.id) }}">{{ r.content }}</a>#}
+  </div>
+</div>
+    {% endfor %}
+
+    {% endfor %}
+    {{ pagination_show(pagination, 'main.comment') }}
+
+
+{% endblock %}
